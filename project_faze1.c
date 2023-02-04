@@ -204,6 +204,8 @@ void createfile(char *a){
     char path[300];
     char *name;
     path1=get_path(a);
+    if(path1==NULL)
+    return;
     strcpy(path , path1);
     name=find_name(path);
     t=nameis_core(name);
