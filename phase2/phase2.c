@@ -26,6 +26,9 @@ void command_mode(WINDOW * command);
 void inputcommand(WINDOW * mode , WINDOW * file , WINDOW * command , WINDOW * num , WINDOW* input);
 void open ( WINDOW * mode , WINDOW * file , WINDOW * command , WINDOW * num , WINDOW* input);
 void createfile(WINDOW * mode , WINDOW * file , WINDOW * command , WINDOW * num , WINDOW* input);
+void visual_mode(int maxy);
+void insert_mode(int maxy);
+void normal_mode(int maxy);
 int main(){
     mkdir("root" , 0777);
    initscr();
@@ -85,6 +88,15 @@ int main(){
         command_mode(command);
         inputcommand(mode , mode1 , command , win , input);
         break;
+        }
+        if(b=='V'){
+            visual_mode(maxy);
+        }
+        else if(b=='I'){
+            insert_mode(maxy);
+        }
+        else if(b=='N'){
+            normal_mode(maxy);
         }
     }
 }
@@ -200,4 +212,49 @@ void createfile(WINDOW * mode , WINDOW * file , WINDOW * command , WINDOW * num 
     makedir(path);
     FILE*fp = fopen(path , "w");
     fclose(fp);
+}
+void visual_mode(int maxy){
+    status = 1;
+    WINDOW * mode = newwin(4 , 26 , maxy -10 , 0);
+   refresh();
+   wbkgd(mode, COLOR_PAIR(2));
+   wrefresh(mode);
+
+   if(status==0)
+   mvwprintw(mode , 1 , 12 , "normal");
+   else if(status==1)
+    mvwprintw(mode , 1 , 12 , "visual");
+    else if(status==2)
+    mvwprintw(mode , 1 , 12 , "insert");
+   wrefresh(mode);
+}
+void insert_mode(int maxy){
+    status = 2;
+    WINDOW * mode = newwin(4 , 26 , maxy -10 , 0);
+   refresh();
+   wbkgd(mode, COLOR_PAIR(2));
+   wrefresh(mode);
+
+   if(status==0)
+   mvwprintw(mode , 1 , 12 , "normal");
+   else if(status==1)
+    mvwprintw(mode , 1 , 12 , "visual");
+    else if(status==2)
+    mvwprintw(mode , 1 , 12 , "insert");
+   wrefresh(mode);
+}
+void normal_mode(int maxy){
+    status = 0;
+    WINDOW * mode = newwin(4 , 26 , maxy -10 , 0);
+   refresh();
+   wbkgd(mode, COLOR_PAIR(2));
+   wrefresh(mode);
+
+   if(status==0)
+   mvwprintw(mode , 1 , 12 , "normal");
+   else if(status==1)
+    mvwprintw(mode , 1 , 12 , "visual");
+    else if(status==2)
+    mvwprintw(mode , 1 , 12 , "insert");
+   wrefresh(mode);
 }
