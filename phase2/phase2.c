@@ -113,7 +113,7 @@ void inputcommand(WINDOW * mode , WINDOW * file , WINDOW * command
         createfile(mode ,  file , command ,  num , input);
     }
     else{
-        mvwprintw(command , 2 , 2 , "valid command");
+        mvwprintw(command , 2 , 2 , "invalid command");
         wrefresh(command);
     }
 }
@@ -161,7 +161,24 @@ void makedir(char *path){
 }
 void open(WINDOW * mode , WINDOW * file , WINDOW * command , WINDOW * num , WINDOW* input){
 char * path = getpath();
-
+FILE * fp = fopen(path , "r");
+if(fp==NULL){
+    mvwprintw(command , 2 , 2 , "This file is not exist");
+    wrefresh(command);
+    fclose(fp);
+    return;
+}
+wrefresh(file);
+mvwprintw(file , 1 , 2 , "/%s" , path);
+wrefresh(file);
+memset(output , '\0' , NUM);
+int i = 1;
+while(fgets(output , 500 , fp)!=NULL){
+    mvwprintw(input , i , 2 , "%s" , output);
+    wrefresh(input);
+    i++;
+}
+fclose(fp);
 }
 
 void createfile(WINDOW * mode , WINDOW * file , WINDOW * command , WINDOW * num , WINDOW* input){
@@ -169,6 +186,4 @@ void createfile(WINDOW * mode , WINDOW * file , WINDOW * command , WINDOW * num 
     makedir(path);
     FILE*fp = fopen(path , "w");
     fclose(fp);
-     mvwprintw(command , 2 , 2 , "succesfull");
-    wrefresh(command);
 }
