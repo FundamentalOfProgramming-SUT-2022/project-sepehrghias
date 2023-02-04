@@ -20,6 +20,7 @@
 
 char output[NUM];
 char commandstr[NUM];
+int save = 0;
 int status = 0;
 void command_mode(WINDOW * command);
 void inputcommand(WINDOW * mode , WINDOW * file , WINDOW * command , WINDOW * num , WINDOW* input);
@@ -169,7 +170,10 @@ if(fp==NULL){
     return;
 }
 wrefresh(file);
+if(save==1)
 mvwprintw(file , 1 , 2 , "/%s" , path);
+if(save==0)
+mvwprintw(file , 1 , 2 , "/%s   +" , path);
 wrefresh(file);
 memset(output , '\0' , NUM);
 int i = 1;
