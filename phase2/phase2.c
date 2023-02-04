@@ -28,62 +28,72 @@ void open ( WINDOW * mode , WINDOW * file , WINDOW * command , WINDOW * num , WI
 void createfile(WINDOW * mode , WINDOW * file , WINDOW * command , WINDOW * num , WINDOW* input);
 int main(){
     mkdir("root" , 0777);
-    while(1){
    initscr();
    noecho();
+   start_color();
+   init_pair(1 ,COLOR_BLACK , COLOR_CYAN);
+    init_pair(2 , COLOR_RED ,COLOR_GREEN);
+    init_pair(3 , COLOR_WHITE , COLOR_BLUE);
+    init_pair(4 , COLOR_RED , COLOR_YELLOW);
    int b;
    cbreak();
    int maxx , maxy;
    getmaxyx(stdscr , maxy , maxx);
-   WINDOW * mode = newwin(4 , 26 , maxy -10 , 1);
+   WINDOW * mode = newwin(4 , 26 , maxy -10 , 0);
    refresh();
-   box(mode , 0 , 0);
+   wbkgd(mode, COLOR_PAIR(2));
+   wrefresh(mode);
+
    if(status==0)
    mvwprintw(mode , 1 , 12 , "normal");
    else if(status==1)
     mvwprintw(mode , 1 , 12 , "visual");
     else if(status==2)
     mvwprintw(mode , 1 , 12 , "insert");
-
    wrefresh(mode);
    move(maxy - 4 , 2);
-    WINDOW * mode1 = newwin(4 , 38 , maxy -10 , 26);
-   refresh();
-   box(mode1 , 0 , 0);
+    WINDOW * mode1 = newwin(4 , maxx - 26 , maxy -10 , 26);
+   wbkgd(mode1, COLOR_PAIR(4));
    mvwprintw(mode1 , 1 , 3 , "NOfile");
    wrefresh(mode1);
 
-   WINDOW * win = newwin(maxy - 10 , 8 , 1 ,1);
+   WINDOW * win = newwin(maxy - 10 , 8 , 0 ,0);
    refresh();
-   box(win , 0 , 0);
+   wbkgd(win, COLOR_PAIR(1));
    for(int i =0 ; i<maxy-12 ; i++){
       mvwprintw(win , i+1 , 3 , "%d" , i+1);
    }
    wrefresh(win);
 
-   WINDOW * input = newwin(maxy - 10 , maxx - 8 , 1 ,8);
+   WINDOW * input = newwin(maxy - 10 , maxx - 8 , 0 ,8);
    refresh();
-   box(input , 0 , 0);
+   wbkgd(input, COLOR_PAIR(1));
    wrefresh(input);
 
-   WINDOW * command = newwin(5 , 130 , maxy -7 , 1);
+   WINDOW * command = newwin(7 , maxx , maxy -6 , 0);
    refresh();
-   box(command , 0 , 0);
+   wbkgd(command, COLOR_PAIR(3));
    wrefresh(command);
+   while(1){
         while(1){
         b = wgetch(mode);
         if(b=='/' || b==':'){
+        WINDOW * command = newwin(7 , maxx , maxy -6 , 0);
+            refresh();
+            wbkgd(command, COLOR_PAIR(3));
+            wrefresh(command);
         command_mode(command);
         inputcommand(mode , mode1 , command , win , input);
         break;
         }
     }
+}
 
    getch();
    endwin();
 
 
-    }
+    
 
     return 0;
    
