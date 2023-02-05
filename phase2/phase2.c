@@ -135,9 +135,6 @@ void inputcommand(WINDOW * mode , WINDOW * file , WINDOW * command
     if(!strncmp(commandstr , ":open " , 5)){
         open( mode ,  file , command ,  num , input);
     }
-    else if(!strncmp(commandstr , ":tree " , 6)){
-        tree()
-    }
     else if(!strncmp(commandstr , ":createfile --file " , strlen(":createfile --file "))){
         createfile(mode ,  file , command ,  num , input);
     }
