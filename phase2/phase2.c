@@ -60,7 +60,6 @@ int main(){
    move(maxy - 4 , 2);
     WINDOW * mode1 = newwin(4 , maxx - 26 , maxy -10 , 26);
    wbkgd(mode1, COLOR_PAIR(4));
-   mvwprintw(mode1 , 1 , 3 , "NOfile");
    wrefresh(mode1);
 
    WINDOW * win = newwin(maxy - 10 , 8 , 0 ,0);
@@ -136,7 +135,10 @@ void inputcommand(WINDOW * mode , WINDOW * file , WINDOW * command
     if(!strncmp(commandstr , ":open " , 5)){
         open( mode ,  file , command ,  num , input);
     }
-    else if(!strncmp(commandstr , "createfile --file " , strlen("createfile --file "))){
+    else if(!strncmp(commandstr , ":tree " , 6)){
+        tree()
+    }
+    else if(!strncmp(commandstr , ":createfile --file " , strlen(":createfile --file "))){
         createfile(mode ,  file , command ,  num , input);
     }
     else{
