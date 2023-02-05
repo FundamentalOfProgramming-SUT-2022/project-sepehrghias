@@ -164,6 +164,8 @@ char * getpath(){
          && path[counter-2]=='.')){
             break;
         }
+        if(counter==strlen(path))
+        return NULL;
         path1[counter]=path[counter];
         counter++;
     }
@@ -189,6 +191,8 @@ void makedir(char *path){
 }
 void open(WINDOW * mode , WINDOW * file , WINDOW * command , WINDOW * num , WINDOW* input){
 char * path = getpath();
+if(path==NULL)
+return;
 FILE * fp = fopen(path , "r");
 if(fp==NULL){
     mvwprintw(command , 2 , 2 , "This file is not exist");
@@ -267,16 +271,19 @@ void navigation(WINDOW * input){
     int direct;
     int x = 2 , y = 1;
     while((direct = wgetch(input))!='E'){
-        wmove(input , y , x);
         if(direct=='k')
         y--;
-        if(y==0)
-        y = 1;
+        
         else if(direct=='j')
         y++;
         else if(direct=='l')
         x++;
         else if(direct=='h')
         x--;
+        if(x==1)
+        x=2;
+        if(y==0)
+        y = 1;
+        wmove(input , y , x);
     }
 }
