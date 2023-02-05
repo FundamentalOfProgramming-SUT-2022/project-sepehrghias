@@ -17,7 +17,7 @@
 
 #define NUM 10000
 
-
+int Y , X;
 char output[NUM];
 char commandstr[NUM];
 int save = 0;
@@ -29,6 +29,7 @@ void createfile(WINDOW * mode , WINDOW * file , WINDOW * command , WINDOW * num 
 void visual_mode(int maxy);
 void insert_mode(int maxy);
 void normal_mode(int maxy);
+void navigation(WINDOW* input);
 int main(){
     mkdir("root" , 0777);
    initscr();
@@ -41,6 +42,8 @@ int main(){
    int b;
    cbreak();
    int maxx , maxy;
+   X = maxx;
+   Y = maxy;
    getmaxyx(stdscr , maxy , maxx);
    WINDOW * mode = newwin(4 , 26 , maxy -10 , 0);
    refresh();
@@ -80,7 +83,7 @@ int main(){
    while(1){
         while(1){
         b = wgetch(mode);
-        if(b=='/' || b==':'){
+        if((b=='/' || b==':') && status==0){
         WINDOW * command = newwin(7 , maxx , maxy -6 , 0);
             refresh();
             wbkgd(command, COLOR_PAIR(3));
@@ -91,6 +94,7 @@ int main(){
         }
         if(b=='V'){
             visual_mode(maxy);
+            navigation(input);
         }
         else if(b=='I'){
             insert_mode(maxy);
@@ -136,6 +140,7 @@ void inputcommand(WINDOW * mode , WINDOW * file , WINDOW * command
         createfile(mode ,  file , command ,  num , input);
     }
     else{
+        
         mvwprintw(command , 2 , 2 , "invalid command");
         wrefresh(command);
     }
@@ -257,4 +262,21 @@ void normal_mode(int maxy){
     else if(status==2)
     mvwprintw(mode , 1 , 12 , "insert");
    wrefresh(mode);
+}
+void navigation(WINDOW * input){
+    int direct;
+    int x = 2 , y = 1;
+    while((direct = wgetch(input))!='E'){
+        wmove(input , y , x);
+        if(direct=='k')
+        y--;
+        if(y==0)
+        y = 1;
+        else if(direct=='j')
+        y++;
+        else if(direct=='l')
+        x++;
+        else if(direct=='h')
+        x--;
+    }
 }
