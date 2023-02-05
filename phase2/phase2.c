@@ -30,6 +30,7 @@ void visual_mode(int maxy);
 void insert_mode(int maxy);
 void normal_mode(int maxy);
 void navigation(WINDOW* input);
+void auto_indent(WINDOW* input);
 int main(){
     mkdir("root" , 0777);
    initscr();
@@ -135,6 +136,9 @@ void inputcommand(WINDOW * mode , WINDOW * file , WINDOW * command
     if(!strncmp(commandstr , ":open " , 5)){
         open( mode ,  file , command ,  num , input);
     }
+    else if(!strncmp(commandstr , "= " , strlen("= "))){
+        auto_indent(input);
+    }
     else if(!strncmp(commandstr , ":createfile --file " , strlen(":createfile --file "))){
         createfile(mode ,  file , command ,  num , input);
     }
@@ -207,11 +211,13 @@ mvwprintw(file , 1 , 2 , "/%s   +" , path);
 wrefresh(file);
 memset(output , '\0' , NUM);
 int i = 1;
+wclrtobot(input);
 while(fgets(output , 500 , fp)!=NULL){
     mvwprintw(input , i , 2 , "%s" , output);
     wrefresh(input);
     i++;
 }
+wmove(input , 1 ,2);
 fclose(fp);
 }
 
@@ -285,4 +291,7 @@ void navigation(WINDOW * input){
         y = 1;
         wmove(input , y , x);
     }
+}
+void auto_indent(WINDOW*input){
+
 }
